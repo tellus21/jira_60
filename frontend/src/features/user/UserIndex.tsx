@@ -22,54 +22,63 @@ const useStyles = makeStyles({
 
 const title = "ユーザマスタ";
 
-const targetURL = `${process.env.REACT_APP_API_URL}/api/profile/`;
+const targetURL = `${process.env.REACT_APP_API_URL}/api/docktors/`;
 
-const CompanyIndex: React.FC<Props> = (props) => {
+const DocktorIndex: React.FC<Props> = (props) => {
     const classes = useStyles();
     const [entries, setEntries] = useState({
         data: [
             {
-                id: 0,
-                user_profile: "",
-                nickname: "",
-                department: "",
-                img: "",
-                authority: "",
+                id: 1,
+                name: "吉田　昌史",
+                nickname: "yoshida",
+                department:"システム",
+                authority:"開発者",
+            },
+            {
+                id: 2,
+                name: "川村　華鈴",
+                nickname: "kawa",
+                department:"ことに",
+                authority:"管理者",
+            },
+            {
+                id: 3,
+                name: "工藤　椋介",
+                nickname: "くどう",
+                department:"事務支援",
+                authority:"一般ユーザ",
             },
         ],
     });
 
-    const [state] = useState({
+    const [state] = React.useState({
         columns: [
-            { title: "ID", field: "id", editable: 'never' },
-            { title: "名前", field: "user_profile", editable: 'onAdd' },
-            { title: "ニックネーム", field: "nickname", editable: 'onAdd' },
-            { title: "所属", field: "department", editable: 'onAdd' },
-            { title: "画像", field: "img", editable: 'onAdd' },
-            { title: "権限", field: "authority", editable: 'onAdd' },
-        ]
+            { title: "ID", field: "id" },
+            { title: "名前", field: "name" },
+            { title: "ニックネーム", field: "nickname" },
+            { title: "所属", field: "department" },
+            { title: "権限", field: "authority" },
+        ],
     });
-    useEffect(() => {
-        axios
-            .get(targetURL)
-            .then((response) => {
-                let data = Array();
-                response.data.forEach((el) => {
-                    data.push({
-                        id: el.id,
-                        user_profile: el.user_profile,
-                        nickname: el.nickname,
-                        department: el.department,
-                        img: el.img,
-                        authority: el.authority,
-                    });
-                });
-                setEntries({ data: data });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }, []);
+
+    //   useEffect(() => {
+    //     axios
+    //       .get(targetURL)
+    //       .then((response) => {
+    //         let data = Array();
+    //         response.data.forEach((el) => {
+    //           data.push({
+    //             id: el.id,
+    //             name: el.name,
+    //           });
+    //         });
+    //         setEntries({ data: data });
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error);
+    //       });
+    //   }, []);
 
     return (
         <GenericTemplate title={""}>
@@ -83,47 +92,8 @@ const CompanyIndex: React.FC<Props> = (props) => {
                 ></Typography>
                 <MaterialTable
                     title={title}
-                    // @ts-ignore
                     columns={state.columns}
                     data={entries.data}
-                    options={{
-                        exportButton: true,
-                        search: true,
-                        selection: true,
-                        showSelectAllCheckbox: false
-                    }}
-                    actions={[
-                        {
-                            tooltip: 'Remove All Selected Users',
-                            icon: 'delete',
-
-                            onClick: (evt, data) => alert('選択行を削除します。よろしいですか？ ')
-                        },
-                    ]}
-                    cellEditable={{
-                        onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-                            return new Promise((resolve) => {
-                                setTimeout(() => {
-                                    resolve();
-                                    const data = [...entries.data];
-                                    // @ts-ignore
-                                    data[data.indexOf(oldValue)] = newValue;
-                                    axios
-                                        .put(`${targetURL}${rowData.id}/`, {
-                                            user_profile: newValue,
-                                            nickname: newValue,
-                                            img: newValue,
-                                            department: newValue,
-                                            authority: newValue,
-                                        })
-                                        .then((res) => console.log(res.data));
-                                    setEntries({ ...entries, data });
-                                }, 600);
-                                console.log("newValue: " + newValue);
-                                setTimeout(resolve, 1000);
-                            });
-                        },
-                    }}
                     editable={{
                         onRowAdd: (newData) =>
                             new Promise((resolve) => {
@@ -132,25 +102,53 @@ const CompanyIndex: React.FC<Props> = (props) => {
                                     const data = [...entries.data];
                                     console.log(data);
                                     const payload = {
-                                        user_profile: newData.user_profile,
-                                        nickname: newData.nickname,
-                                        img: newData.img,
-                                        department: newData.department,
-                                        authority: newData.authority,
+                                        id: newData.id,
+                                        name: newData.name,
                                     };
                                     axios
                                         .post(targetURL, newData, {
                                             params: {
-                                                user_profile: entries.data[0].user_profile,
-                                                nickname: entries.data[0].nickname,
-                                                img: entries.data[0].img,
-                                                department: entries.data[0].department,
-                                                authority: entries.data[0].authority,
+                                                id: entries.data[0].id,
+                                                name: entries.data[0].name,
                                             },
                                         })
                                         .then((res) => {
                                             console.log(res.data.data);
                                         });
+                                }, 600);
+                            }),
+                        onRowUpdate: (newData, oldData) =>
+                            new Promise((resolve) => {
+                                setTimeout(() => {
+                                    resolve();
+                                    const data = [...entries.data];
+                                    // @ts-ignore
+                                    data[data.indexOf(oldData)] = newData;
+                                    axios
+                                        .put(`${targetURL}+${newData.id}/`, newData, {
+                                            params: {
+                                                id: entries.data[0].id,
+                                                name: entries.data[0].name,
+                                            },
+                                        })
+                                        .then((res) => console.log(res.data));
+                                    setEntries({ ...entries, data });
+                                }, 600);
+                            }),
+                        onRowDelete: (oldData) =>
+                            new Promise((resolve) => {
+                                setTimeout(() => {
+                                    resolve();
+                                    const data = [...entries.data];
+                                    data.splice(data.indexOf(oldData), 1);
+                                    axios
+                                        .delete(`${targetURL}+${oldData.id}/`, {
+                                            params: {
+                                                id: entries.data[0].id,
+                                            },
+                                        })
+                                        .then((res) => console.log(res.data));
+                                    setEntries({ ...entries, data });
                                 }, 600);
                             }),
                     }}
@@ -160,4 +158,4 @@ const CompanyIndex: React.FC<Props> = (props) => {
     );
 };
 
-export default withRouter(CompanyIndex);
+export default withRouter(DocktorIndex);

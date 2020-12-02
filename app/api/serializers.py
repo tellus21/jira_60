@@ -116,16 +116,16 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class ProgressSerializer(serializers.ModelSerializer):
     # 選択した数字ではなく、名前で出るようにオーバーライド
-    examination_type = serializers.CharField(
-        source='get_examination_type_display', read_only=True)
-    examination_classification = serializers.CharField(
-        source='get_examination_classification_display', read_only=True)
-    needs_billing = serializers.CharField(
-        source='get_needs_billing_display', read_only=True)
-    result_destination = serializers.CharField(
-        source='get_result_destination_display', read_only=True)
-    insurance_type = serializers.CharField(
-        source='get_insurance_type_display', read_only=True)
+    # examination_type = serializers.CharField(
+    #     source='get_examination_type_display', read_only=True)
+    # examination_classification = serializers.CharField(
+    #     source='get_examination_classification_display', read_only=True)
+    # needs_billing = serializers.CharField(
+    #     source='get_needs_billing_display', read_only=True)
+    # result_destination = serializers.CharField(
+    #     source='get_result_destination_display', read_only=True)
+    # insurance_type = serializers.CharField(
+    #     source='get_insurance_type_display', read_only=True)
     company_reservation_company_name = serializers.ReadOnlyField(
         source='company_reservation_company.name', read_only=True)
     company_name = serializers.ReadOnlyField(

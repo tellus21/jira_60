@@ -146,54 +146,6 @@ const ProgressIndex: React.FC<Props> = (props) => {
       );
     }
   };
-
-  const insertCheckboxScan = (target) => {
-    if (target === true) {
-      return (
-        <FormControlLabel
-          className={classes.root}
-          value="creater"
-          control={<Checkbox defaultChecked color="primary" size="small" />}
-          label="true"
-          labelPlacement="bottom"
-        />
-      );
-    } else if (target === false) {
-      return (
-        <FormControlLabel
-          className={classes.root}
-          value="creater"
-          control={<Checkbox checked color="primary" size="small" />}
-          label='12/1 くどう'
-          labelPlacement="bottom"
-        />
-      );
-    }
-  };
-
-  const insertCheckboxDocktor = (target) => {
-    if (target === true) {
-      return (
-        <FormControlLabel
-          className={classes.root}
-          value="creater"
-          control={<Checkbox defaultChecked color="primary" size="small" />}
-          label="true"
-          labelPlacement="bottom"
-        />
-      );
-    } else if (target === false) {
-      return (
-        <FormControlLabel
-          className={classes.root}
-          value="creater"
-          control={<Checkbox checked color="primary" size="small" />}
-          label='12/2 kawa'
-          labelPlacement="bottom"
-        />
-      );
-    }
-  };
   // まずは予約システムの企業名を表示しておいて、あとからDBの企業名に変更できるように。
   // DBの企業名いれたら、請求書有無と結果送付先が自動で入るように
 
@@ -249,8 +201,8 @@ const ProgressIndex: React.FC<Props> = (props) => {
             result_destination: el.result_destination,
             remarks: el.remarks,
             insurance_type: el.insurance_type,
-            has_scanned: insertCheckboxScan(el.has_scanned),
-            has_requested_docktor: insertCheckboxDocktor(el.has_requested_docktor),
+            has_scanned: insertCheckbox(el.has_scanned),
+            has_requested_docktor: insertCheckbox(el.has_requested_docktor),
             has_requested_check: insertCheckbox(el.has_requested_check),
             has_prepared: insertCheckbox(el.has_prepared),
             has_checked_final: insertCheckbox(el.has_checked_final),

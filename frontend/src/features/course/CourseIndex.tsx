@@ -22,14 +22,15 @@ const useStyles = makeStyles({
 
 const title = "コースマスタ";
 
-const targetURL = `${process.env.REACT_APP_API_URL}/api/docktors/`;
+const targetURL = `${process.env.REACT_APP_API_URL}/api/courses/`;
 
 const CourseIndex: React.FC<Props> = (props) => {
   const classes = useStyles();
   const [entries, setEntries] = useState({
     data: [
       {
-        id: "",
+        id: 0,
+        cd: 0,
         name: "",
       },
     ],
@@ -38,6 +39,7 @@ const CourseIndex: React.FC<Props> = (props) => {
   const [state] = React.useState({
     columns: [
       { title: "ID", field: "id" },
+      { title: "CD", field: "cd" },
       { title: "名前", field: "name" },
     ],
   });
@@ -50,6 +52,7 @@ const CourseIndex: React.FC<Props> = (props) => {
         response.data.forEach((el) => {
           data.push({
             id: el.id,
+            cd: el.cd,
             name: el.name,
           });
         });
@@ -83,12 +86,14 @@ const CourseIndex: React.FC<Props> = (props) => {
                   console.log(data);
                   const payload = {
                     id: newData.id,
+                    cd: newData.cd,
                     name: newData.name,
                   };
                   axios
                     .post(targetURL, newData, {
                       params: {
                         id: entries.data[0].id,
+                        cd: entries.data[0].cd,
                         name: entries.data[0].name,
                       },
                     })
