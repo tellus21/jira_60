@@ -1,0 +1,14 @@
+FROM node:12.13-alpine
+
+RUN npm install -g create-react-app
+RUN npm install axios
+RUN npm install react-icons
+RUN npm install react-router-dom
+RUN npm install @material-ui/core
+RUN npm install @material-ui/icons
+RUN npm install @material-ui/lab
+RUN npm install formik
+RUN npm install formik-material-ui
+RUN npm install yup @types/yup
+RUN npm install react-modal
+RUN npm install @types/react-modal
